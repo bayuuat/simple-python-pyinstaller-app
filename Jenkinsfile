@@ -1,11 +1,13 @@
 node {
     def buildImage = 'python:2-alpine'
-    def buildDir = 'sources'
+    def buildDir = 'workspaces/sources'
 
     try {
         stage('Build') {
             docker.image(buildImage).inside {
-                sh "python -m py_compile ${buildDir}/add2vals.py ${buildDir}/calc.py"
+                sh 'ls'
+                sh 'ls -la /workspace/sources/'
+                sh 'python -m py_compile /workspace/sources/add2vals.py /workspace/sources/calc.py'
             }
         }
     } catch (e) {

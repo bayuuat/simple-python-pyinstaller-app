@@ -1,18 +1,15 @@
-node {
-    def buildImage = 'python:2-alpine'
-    def buildDir = 'workspaces/sources'
-
-    try {
+pipeline {
+    agent none
+    stages {
         stage('Build') {
-            docker.image(buildImage).inside {
-                sh 'ls'
-                sh 'ls -la /workspace/sources/'
-                sh 'python -m py_compile /workspace/sources/add2vals.py /workspace/sources/calc.py'
+            agent {
+                docker {
+                    image 'python:2-alpine'
+                }
+            }
+            steps {
+                sh 'python -m py_compile sources/add2vals.py sources/calc.py'
             }
         }
-    } catch (e) {
-        echo "Build stage failed: ${e.message}"
-        currentBuild.result = 'FAILURE'
-        throw e
     }
 }

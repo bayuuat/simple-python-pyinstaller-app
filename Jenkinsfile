@@ -20,7 +20,7 @@ node {
     }
     
     stage('Deploy') {
-        docker.image('python:3-alpine').inside('-u root') {
+        docker.image('python:3').inside('-u root') {
             try {
                 sh 'apk update && apk add --no-cache gcc glibc binutils'
 

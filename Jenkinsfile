@@ -32,8 +32,8 @@ node {
 
                 archiveArtifacts 'dist/add2vals'
 
-                // echo 'Application will run for 1 minute...'
-                // sleep(time: 60, unit: 'SECONDS')
+                echo 'Application will run for 1 minute...'
+                sleep(time: 60, unit: 'SECONDS')
 
                 echo 'Application execution completed'
             } catch (Exception e) {
@@ -59,7 +59,7 @@ node {
                                 execCommand: '''
                                     cd app/dist
                                     chmod +x add2vals
-                                    ./add2vals
+                                    ./add2vals 97 23
                                 '''
                             )
                         ]

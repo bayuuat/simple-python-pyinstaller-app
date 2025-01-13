@@ -23,6 +23,8 @@ node {
         docker.image('python:2-alpine').inside('-u root') {
             try {
                 sh 'apk add --no-cache gcc musl-dev'
+
+                sh 'pip install --upgrade pip setuptools wheel'
                 
                 sh 'pip install pyinstaller==3.6'
 

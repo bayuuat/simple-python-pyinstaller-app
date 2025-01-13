@@ -22,12 +22,7 @@ node {
     stage('Deploy') {
         docker.image('python:2-alpine').inside {
             try {
-                sh '''
-                    apt-get update
-                    apt-get install -y python-dev
-                    pip install pyinstaller==3.6
-                '''
-                
+                sh 'pip install pyinstaller==3.6'
                 sh 'pyinstaller --onefile sources/add2vals.py'
                 
                 archiveArtifacts 'dist/add2vals'
@@ -40,5 +35,6 @@ node {
                 error "Deployment failed: ${e.getMessage()}"
             }
         }
+
     }
 }

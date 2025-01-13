@@ -22,7 +22,10 @@ node {
     stage('Deploy') {
         docker.image('python:3-alpine').inside {
             try {
-                sh 'pip install pyinstaller==4.3'
+                sh 'apk add --no-cache gcc musl-dev'
+                
+                sh 'pip install pyinstaller==3.6'
+
                 sh 'pyinstaller --onefile sources/add2vals.py'
 
                 archiveArtifacts 'dist/add2vals'

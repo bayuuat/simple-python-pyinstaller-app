@@ -55,9 +55,9 @@ node {
                         transfers: [
                             sshTransfer(
                                 sourceFiles: 'dist/add2vals',
-                                remoteDirectory: '/home/ubuntu/app',
+                                remoteDirectory: '/app',
                                 execCommand: '''
-                                    cd /home/ubuntu/app
+                                    cd /app/dist
                                     chmod +x add2vals
                                     ./add2vals
                                 '''

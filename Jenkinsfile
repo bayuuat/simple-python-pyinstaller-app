@@ -20,24 +20,15 @@ node {
     }
     
     stage('Deploy') {
-        docker.image('python:2-alpine').inside {
+        docker.image('python:2-alpine').inside('-u root') {
             try {
-                sh 'pip install cx-Freeze==5.1.1' 
+                sh 'apk add --no-cache gcc musl-dev'
                 
-                writeFile file: 'setup.py', text: """ 
-                from cx_Freeze import setup, Executable 
-                 
-                setup( 
-                    name='add2vals', 
-                    version='0.1', 
-                    description='Sample application', 
-                    executables=[Executable('sources/add2vals.py')]
-                ) 
-                """ 
-                 
-                sh 'python setup.py build' 
+                sh 'pip install pyinstaller==3.6'
 
-                archiveArtifacts 'build/exe.linux-x86_64-2.7/add2vals'
+                sh 'pyinstaller --onefile sources/add2vals.py'
+
+                archiveArtifacts 'dist/add2vals'
 
                 echo 'Application will run for 1 minute...'
                 sleep(time: 60, unit: 'SECONDS')

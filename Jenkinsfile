@@ -1,6 +1,6 @@
 node {
     stage('Build') {
-        docker.image('python:2-alpine').inside {
+        docker.image('python:3-alpine').inside {
             sh 'python -m py_compile sources/add2vals.py sources/calc.py'
         }
     }
@@ -20,13 +20,13 @@ node {
     }
     
     stage('Deploy') {
-        docker.image('python:2-slim').inside('-u root') {
+        docker.image('python:3-alpine').inside('-u root') {
             try {
                 sh 'apt-get update && apt-get install -y gcc python2-dev'
 
-                sh 'pip install --upgrade pip==20.3.4 setuptools==44.1.1 wheel==0.36.2'
+                sh 'pip install --upgrade pip setuptools wheel'
 
-                sh 'pip install pyinstaller==3.6 --no-use-pep517'
+                sh 'pip install pyinstaller'
 
                 sh 'pyinstaller --onefile sources/add2vals.py'
 

@@ -20,26 +20,27 @@ node {
     }
     
     stage('Deploy') {
-        docker.image('python:3').inside('-u root') {
-            try {
-                sh 'apk update && apk add --no-cache gcc glibc binutils'
+        docker.image('python:3-slim').inside('-u root') {
+        try {
+            sh 'apt-get update && apt-get install -y gcc binutils'
 
-                sh 'pip install --upgrade pip setuptools wheel'
+            sh 'pip install --upgrade pip setuptools wheel'
 
-                sh 'pip install pyinstaller'
+            sh 'pip install pyinstaller'
 
-                sh 'pyinstaller --onefile sources/add2vals.py'
+            sh 'pyinstaller --onefile sources/add2vals.py'
 
-                archiveArtifacts 'dist/add2vals'
+            archiveArtifacts 'dist/add2vals'
 
-                echo 'Application will run for 1 minute...'
-                sleep(time: 60, unit: 'SECONDS')
+            echo 'Application will run for 1 minute...'
+            sleep(time: 60, unit: 'SECONDS')
 
-                echo 'Application execution completed'
-            } catch (Exception e) {
-                error "Deployment failed: ${e.getMessage()}"
-            }
+            echo 'Application execution completed'
+        } catch (Exception e) {
+            error "Deployment failed: ${e.getMessage()}"
         }
+    }
+
     }
 
 }

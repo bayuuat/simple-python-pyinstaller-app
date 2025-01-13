@@ -20,21 +20,20 @@ node {
     }
     
     stage('Deploy') {
-        docker.image('python:2-alpine').inside {
+        docker.image('python:3-alpine').inside {
             try {
-                sh 'pip install pyinstaller==3.6'
+                sh 'pip install pyinstaller==4.3'
                 sh 'pyinstaller --onefile sources/add2vals.py'
-                
+
                 archiveArtifacts 'dist/add2vals'
-                
+
                 echo 'Application will run for 1 minute...'
                 sleep(time: 60, unit: 'SECONDS')
-                
+
                 echo 'Application execution completed'
             } catch (Exception e) {
                 error "Deployment failed: ${e.getMessage()}"
             }
         }
-
     }
 }

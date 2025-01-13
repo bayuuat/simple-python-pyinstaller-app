@@ -22,9 +22,9 @@ node {
     stage('Deploy') {
         docker.image('python:3-slim').inside('-u root') {
             try {
-                sh 'apt-get update && apt-get install -y gcc binutils'
+                // sh 'apt-get update && apt-get install -y gcc binutils'
 
-                sh 'pip install --upgrade pip setuptools wheel'
+                // sh 'pip install --upgrade pip setuptools wheel'
 
                 sh 'pip install pyinstaller'
 
@@ -32,8 +32,8 @@ node {
 
                 archiveArtifacts 'dist/add2vals'
 
-                echo 'Application will run for 1 minute...'
-                sleep(time: 60, unit: 'SECONDS')
+                // echo 'Application will run for 1 minute...'
+                // sleep(time: 60, unit: 'SECONDS')
 
                 echo 'Application execution completed'
             } catch (Exception e) {
@@ -47,7 +47,7 @@ node {
     }
 
     stage('Deploy to EC2') {
-        steps {
+        try {
             sshPublisher(
                 publishers: [
                     sshPublisherDesc(
@@ -66,6 +66,8 @@ node {
                     )
                 ]
             )
+        } catch (Exception e) {
+            error "EC2 deployment failed: ${e.getMessage()}"
         }
     }
 }

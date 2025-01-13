@@ -20,7 +20,7 @@ node {
     }
     
     stage('Deploy') {
-        docker.image('python:3-alpine').inside {
+        docker.image('python:2-alpine').inside {
             try {
                 sh 'apk add --no-cache gcc musl-dev'
                 

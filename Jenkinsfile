@@ -26,7 +26,7 @@ node {
 
                 sh 'pip install --upgrade pip==20.3.4 setuptools==44.1.1 wheel==0.36.2'
 
-                sh 'pip install pyinstaller==3.6'
+                sh 'pip install pyinstaller==3.6 --no-use-pep517'
 
                 sh 'pyinstaller --onefile sources/add2vals.py'
 

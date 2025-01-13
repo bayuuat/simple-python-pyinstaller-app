@@ -57,7 +57,7 @@ node {
                                 sourceFiles: 'dist/add2vals',
                                 remoteDirectory: '/app',
                                 execCommand: '''
-                                    cd /app/dist
+                                    cd app/dist
                                     chmod +x add2vals
                                     ./add2vals
                                 '''

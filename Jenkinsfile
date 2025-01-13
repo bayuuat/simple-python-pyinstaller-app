@@ -22,6 +22,8 @@ node {
     stage('Deploy') {
         docker.image('python:3-alpine').inside('-u root') {
             try {
+                sh 'apk update && apk add --no-cache gcc python2-dev libc-bin binutils'
+
                 sh 'pip install --upgrade pip setuptools wheel'
 
                 sh 'pip install pyinstaller'
@@ -39,4 +41,5 @@ node {
             }
         }
     }
+
 }

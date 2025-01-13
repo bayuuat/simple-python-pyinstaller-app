@@ -20,25 +20,20 @@ node {
     }
     
     stage('Deploy') {
-        docker.image('python:2-alpine').inside('-u root') {
-            try {
-                sh 'apk add --no-cache gcc musl-dev'
+        docker.image('cdrx/pyinstaller-linux:python2')
+            .inside("--entrypoint /bin/sh") {
+                try {
+                    sh 'pyinstaller --onefile sources/add2vals.py'
 
-                sh 'pip install --upgrade pip setuptools wheel'
-                
-                sh 'pip install pyinstaller==3.6'
+                    archiveArtifacts 'dist/add2vals'
 
-                sh 'pyinstaller --onefile sources/add2vals.py'
+                    echo 'Application will run for 1 minute...'
+                    sleep(time: 60, unit: 'SECONDS')
 
-                archiveArtifacts 'dist/add2vals'
-
-                echo 'Application will run for 1 minute...'
-                sleep(time: 60, unit: 'SECONDS')
-
-                echo 'Application execution completed'
-            } catch (Exception e) {
-                error "Deployment failed: ${e.getMessage()}"
-            }
+                    echo 'Application execution completed'
+                } catch (Exception e) {
+                    error "Deployment failed: ${e.getMessage()}"
+                }
         }
     }
 }

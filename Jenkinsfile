@@ -20,9 +20,13 @@ node {
     }
     
     stage('Deploy') {
-        docker.image('python:2').inside {
+        docker.image('python:2-alpine').inside {
             try {
-                sh 'pip install pyinstaller'
+                sh '''
+                    apt-get update
+                    apt-get install -y python-dev
+                    pip install pyinstaller==3.6
+                '''
                 
                 sh 'pyinstaller --onefile sources/add2vals.py'
                 

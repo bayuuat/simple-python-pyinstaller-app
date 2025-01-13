@@ -14,4 +14,25 @@ node {
             }
         }
     }
+    
+    stage('Manual Approval') {
+        input message: 'Lanjutkan ke tahap Deploy?', ok: 'Proceed'
+    }
+    
+    stage('Deploy') {
+        docker.image('cdrx/pyinstaller-linux:python2').inside {
+            try {
+                sh 'pyinstaller --onefile sources/add2vals.py'
+                
+                archiveArtifacts 'dist/add2vals'
+                
+                echo 'Application will run for 1 minute...'
+                sleep(time: 60, unit: 'SECONDS')
+                
+                echo 'Application execution completed'
+            } catch (Exception e) {
+                error "Deployment failed: ${e.getMessage()}"
+            }
+        }
+    }
 }

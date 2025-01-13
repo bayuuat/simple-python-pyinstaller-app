@@ -20,20 +20,19 @@ node {
     }
     
     stage('Deploy') {
-        docker.image('cdrx/pyinstaller-linux:python2')
-            .inside("--entrypoint /bin/sh") {
-                try {
-                    sh 'pyinstaller --onefile sources/add2vals.py'
+        docker.image('cdrx/pyinstaller-linux:python2').inside {
+            try {
+                sh 'entrypoint-linux.sh pyinstaller --onefile sources/add2vals.py'
 
-                    archiveArtifacts 'dist/add2vals'
+                archiveArtifacts 'dist/add2vals'
 
-                    echo 'Application will run for 1 minute...'
-                    sleep(time: 60, unit: 'SECONDS')
+                echo 'Application will run for 1 minute...'
+                sleep(time: 60, unit: 'SECONDS')
 
-                    echo 'Application execution completed'
-                } catch (Exception e) {
-                    error "Deployment failed: ${e.getMessage()}"
-                }
+                echo 'Application execution completed'
+            } catch (Exception e) {
+                error "Deployment failed: ${e.getMessage()}"
+            }
         }
     }
 }

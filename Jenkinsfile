@@ -22,7 +22,7 @@ node {
     stage('Deploy') {
         docker.image('python:2-slim').inside('-u root') {
             try {
-                sh 'apt-get update && apt-get install -y gcc python2-dev libffi-dev openssl-dev'
+                sh 'apt-get update && apt-get install -y gcc python2-dev'
 
                 sh 'pip install --upgrade pip==20.3.4 setuptools==44.1.1 wheel==0.36.2'
 

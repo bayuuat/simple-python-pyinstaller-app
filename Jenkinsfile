@@ -20,9 +20,14 @@ node {
     }
     
     stage('Deploy') {
-        docker.image('cdrx/pyinstaller-linux:python2')
-        .inside("--entrypoint='entrypoint-linux.sh'") {
+        docker.image('python:2-slim').inside('-u root') {
             try {
+                sh 'apt-get update && apt-get install -y gcc python2-dev libffi-dev openssl-dev'
+
+                sh 'pip install --upgrade pip==20.3.4 setuptools==44.1.1 wheel==0.36.2'
+
+                sh 'pip install pyinstaller==3.6'
+
                 sh 'pyinstaller --onefile sources/add2vals.py'
 
                 archiveArtifacts 'dist/add2vals'

@@ -22,9 +22,9 @@ node {
     stage('Deploy') {
         docker.image('python:3-slim').inside('-u root') {
             try {
-                // sh 'apt-get update && apt-get install -y gcc binutils'
+                sh 'apt-get update && apt-get install -y gcc binutils'
 
-                // sh 'pip install --upgrade pip setuptools wheel'
+                sh 'pip install --upgrade pip setuptools wheel'
 
                 sh 'pip install pyinstaller'
 
